@@ -1,4 +1,4 @@
-package com.rf.ecommerce.Entity;
+package com.rf.ecommerce.Entity.Product;
 
 import com.rf.ecommerce.Entity.Admin.Admin;
 import jakarta.persistence.*;
@@ -22,4 +22,6 @@ public class Product {
     private Admin admin;
     @Lob
     private String image;
+    @NotNull
+    private String Category;
 }

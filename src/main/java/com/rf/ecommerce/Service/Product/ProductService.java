@@ -1,14 +1,13 @@
-package com.rf.ecommerce.Service;
+package com.rf.ecommerce.Service.Product;
 
 
-import com.rf.ecommerce.Entity.Product;
-import com.rf.ecommerce.Repository.ProductRepository;
+import com.rf.ecommerce.Entity.Product.Product;
+import com.rf.ecommerce.Repository.Product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 

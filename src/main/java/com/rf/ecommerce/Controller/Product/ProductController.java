@@ -1,9 +1,9 @@
-package com.rf.ecommerce.Controller;
+package com.rf.ecommerce.Controller.Product;
 
 import com.rf.ecommerce.Entity.Admin.Admin;
-import com.rf.ecommerce.Entity.Product;
+import com.rf.ecommerce.Entity.Product.Product;
 import com.rf.ecommerce.Service.Admin.AdminService;
-import com.rf.ecommerce.Service.ProductService;
+import com.rf.ecommerce.Service.Product.ProductService;
 import com.rf.ecommerce.error.ApiError;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,6 @@ public class ProductController {
         }else{
             ApiError apiError=new ApiError(404,"Paylaşım bulunamadi","/updateProduct");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
-
         }
 
     }
@@ -82,6 +81,19 @@ public class ProductController {
         }
         return  productList;
     }
+    // kategoriye göre ürün getirme
+    @GetMapping("/getCategoryProducts/{category}")
+    public List<Product> getCategoryProducts(@PathVariable String category){
+        List<Product> productList=new ArrayList<>();
+        for(Product product : productService.getAllProducts()){
+            if(product.getCategory().equals(category)){
+                productList.add(product);
+            }
+        }
+        return productList;
+    }
+    // sepete ekleme
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
