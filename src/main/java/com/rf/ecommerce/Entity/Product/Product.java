@@ -24,4 +24,6 @@ public class Product {
     private String image;
     @NotNull
     private String Category;
+    @NotNull
+    private int price;
 }

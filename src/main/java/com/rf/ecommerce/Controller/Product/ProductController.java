@@ -2,8 +2,10 @@ package com.rf.ecommerce.Controller.Product;
 
 import com.rf.ecommerce.Entity.Admin.Admin;
 import com.rf.ecommerce.Entity.Product.Product;
+import com.rf.ecommerce.Entity.User.User;
 import com.rf.ecommerce.Service.Admin.AdminService;
 import com.rf.ecommerce.Service.Product.ProductService;
+import com.rf.ecommerce.Service.User.UserService;
 import com.rf.ecommerce.error.ApiError;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class ProductController {
     AdminService adminService;
     @Autowired
     ProductService productService;
+    @Autowired
+    UserService userService;
+
     // ürün ekleme
     @PostMapping("/createProduct/{username}")
     @CrossOrigin
@@ -92,7 +97,8 @@ public class ProductController {
         }
         return productList;
     }
-    // sepete ekleme
+
+
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
