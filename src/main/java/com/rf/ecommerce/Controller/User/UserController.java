@@ -1,5 +1,7 @@
 package com.rf.ecommerce.Controller.User;
 
+import com.rf.ecommerce.Dto.ChangePassword;
+import com.rf.ecommerce.Entity.Admin.Admin;
 import com.rf.ecommerce.Entity.User.User;
 import com.rf.ecommerce.Service.User.UserService;
 import com.rf.ecommerce.error.ApiError;
@@ -11,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +40,54 @@ public class UserController {
         }
     }
     // giriş
+    @PostMapping("/userLogin")
+    public ResponseEntity<?> userLogin(@RequestHeader(name = "Authorization",required = false)String authorization){
+        User user=null;
+        if(authorization==null){
+            ApiError apiError=new ApiError(401,"Boş değer","/api/auth");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
+        }
+        String[] basicSplit=authorization.split("Basic");
+        String userpas=basicSplit[1];
+        String userpass=userpas.split(" ")[1];
+        String decode=new String(Base64.getDecoder().decode(userpass));
+        System.out.println(decode);
+        String email=decode.split(":")[0];
+        String sifre=decode.split(":")[1];
+        if(userService.existsByEmail(email)){
+            user=userService.findByEmail(email);
+            if(userService.passwordEncoder.matches(sifre,user.getPassword())){
+                return  ResponseEntity.ok("Giriş Yapıldı");
+            }else{
+                ApiError apiError=new ApiError(401,"Yanliş Şifre","/api/user/auth");
+                Map<String,String > validationErrors=new HashMap<>();
+                validationErrors.put("password","Şifreniz Yanlış Tekrar Deneyin");
+                apiError.setValidationErrors(validationErrors);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
+            }
+        }
+        else{
+            ApiError apiError = new ApiError(401, "Hata", "/api/user/auth");
+            Map<String,String > validationErrors=new HashMap<>();
+            validationErrors.put("email","Sistemde Kayitli değilsiniz Kaydolun");
+            apiError.setValidationErrors(validationErrors);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
+        }
+    }
+
     // şifremi unuttum
+    @PostMapping("/forgot")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ChangePassword user){
+        User updateUser;
+        if(userService.existsByEmail(user.getEmail())){
+            updateUser=userService.findByEmail(user.getEmail());
+            updateUser.setPassword(user.getPassword());
+            updateUser.setPassword(userService.passwordEncoder.encode(updateUser.getPassword()));
+            userService.save(updateUser);
+            return ResponseEntity.ok("Şifre değiştirildi");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kullanici Bulunamadi");
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError hataGonder(MethodArgumentNotValidException exception){

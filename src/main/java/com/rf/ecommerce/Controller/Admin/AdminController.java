@@ -61,7 +61,7 @@ public class AdminController {
      }else{
          ApiError apiError=new ApiError(401,"Yanliş Şifre","/api/auth");
          Map<String,String > validationErrors=new HashMap<>();
-         validationErrors.put("sifre","Şifreniz Yanlış Tekrar Deneyin");
+         validationErrors.put("password","Şifreniz Yanlış Tekrar Deneyin");
          apiError.setValidationErrors(validationErrors);
          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
      }
