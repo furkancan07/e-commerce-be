@@ -1,7 +1,6 @@
 package com.rf.ecommerce.Controller.User;
 
 import com.rf.ecommerce.Dto.ChangePassword;
-import com.rf.ecommerce.Entity.Admin.Admin;
 import com.rf.ecommerce.Entity.User.User;
 import com.rf.ecommerce.Service.User.UserService;
 import com.rf.ecommerce.error.ApiError;
@@ -90,7 +89,7 @@ public class UserController {
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError hataGonder(MethodArgumentNotValidException exception){
+    public ApiError sendError(MethodArgumentNotValidException exception){
         ApiError apiError=new ApiError(400,"Hata","/api/user");
         Map<String,String> validationErross=new HashMap<>();
         for(FieldError fieldError: exception.getBindingResult().getFieldErrors()){

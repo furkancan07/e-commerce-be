@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ProductService {
     ProductRepository productRepository;
-    List<Product> productList=new ArrayList<>();
+
 
     @Autowired
     public ProductService(ProductRepository productRepository) {
@@ -23,13 +23,7 @@ public class ProductService {
         productRepository.save(product);
     }
     public void delete(Long id){
-        for(Product product:getAllProducts()){
-            if(product.getId().equals(id)){
-                productRepository.delete(product);
-                productList.remove(product);
-                break;
-            }
-        }
+      productRepository.deleteById(id);
     }
     public boolean existsById(Long id){
         return productRepository.existsById(id);
@@ -39,6 +33,6 @@ public class ProductService {
     }
 
     public List<Product> getAllProducts(){
-        return  productList;
+        return  productRepository.findAll();
     }
 }

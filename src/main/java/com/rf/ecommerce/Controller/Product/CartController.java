@@ -1,9 +1,9 @@
 package com.rf.ecommerce.Controller.Product;
 
-import com.rf.ecommerce.Entity.Product.Hamper;
+import com.rf.ecommerce.Entity.Product.Cart;
 import com.rf.ecommerce.Entity.Product.Product;
 import com.rf.ecommerce.Entity.User.User;
-import com.rf.ecommerce.Service.Product.HamperService;
+import com.rf.ecommerce.Service.Product.CartService;
 import com.rf.ecommerce.Service.Product.ProductService;
 import com.rf.ecommerce.Service.User.UserService;
 
@@ -18,26 +18,26 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class HamperController {
+public class CartController {
     @Autowired
-    HamperService hamperService;
+    CartService cartService;
     @Autowired
     UserService userService;
     @Autowired
     ProductService productService;
     // sepete ekleme
-    @PostMapping("/addHamper/{email}/{productId}")
+    @PostMapping("/addCart/{email}/{productId}")
     @CrossOrigin
-    public ResponseEntity<?> addHamper(@PathVariable String email,@PathVariable Long productId){
+    public ResponseEntity<?> addCart(@PathVariable String email,@PathVariable Long productId){
         if(userService.existsByEmail(email) && productService.existsById(productId)){
-            Hamper hamper=new Hamper();
+            Cart cart =new Cart();
 
             User user=userService.findByEmail(email);
             Product product=productService.findById(productId);
-            hamper.setUser(user);
-            hamper.setProduct(product);
-            hamperService.getAllHampers().add(hamper);
-            hamperService.save(hamper);
+            cart.setUser(user);
+            cart.setProduct(product);
+
+            cartService.save(cart);
 
            return  ResponseEntity.ok("Ürün Sepete Eklendi");
         }
@@ -45,13 +45,13 @@ public class HamperController {
     }
 
     // sepetten kaldirma
-    @DeleteMapping("/deleteHampers/{hamperId}")
+    @DeleteMapping("/deleteCart/{hamperId}")
     @CrossOrigin
     public ResponseEntity<?> deleteHamper(@PathVariable Long hamperId){
-        if(hamperService.existsById(hamperId)){
-            Hamper hamper=hamperService.findById(hamperId);
-            hamperService.delete(hamperId);
-            hamperService.getAllHampers().remove(hamper);
+        if(cartService.existsById(hamperId)){
+            Cart cart = cartService.findById(hamperId);
+            cartService.delete(hamperId);
+
             return ResponseEntity.ok("Sepetten ürün kaldırıldı");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ürün bulunamadı");
@@ -59,17 +59,17 @@ public class HamperController {
 
 
     //sepettekilerin listesini getirme
-    @GetMapping("/getHampers/{email}/{productId}")
+    @GetMapping("/getCarts/{email}")
     @CrossOrigin
-    public List<Hamper> getHampers(@PathVariable String email,@PathVariable Long productId){
-        List<Hamper> hampers=new ArrayList<>();
+    public List<Cart> getHampers(@PathVariable String email){
+        List<Cart> carts =new ArrayList<>();
 
-        for(Hamper hamper : hamperService.getAllHampers()){
-            if(hamper.getUser().getEmail().equals(email)){
-                hampers.add(hamper);
+        for(Cart cart : cartService.getAllHampers()){
+            if(cart.getUser().getEmail().equals(email)){
+                carts.add(cart);
             }
         }
-        return hampers;
+        return carts;
     }
 
 }

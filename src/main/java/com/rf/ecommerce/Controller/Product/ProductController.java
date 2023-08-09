@@ -2,7 +2,6 @@ package com.rf.ecommerce.Controller.Product;
 
 import com.rf.ecommerce.Entity.Admin.Admin;
 import com.rf.ecommerce.Entity.Product.Product;
-import com.rf.ecommerce.Entity.User.User;
 import com.rf.ecommerce.Service.Admin.AdminService;
 import com.rf.ecommerce.Service.Product.ProductService;
 import com.rf.ecommerce.Service.User.UserService;
@@ -30,6 +29,8 @@ public class ProductController {
     @Autowired
     UserService userService;
 
+
+
     // ürün ekleme
     @PostMapping("/createProduct/{username}")
     @CrossOrigin
@@ -39,7 +40,7 @@ public class ProductController {
                admin=adminService.findByUsername(username);
                product.setAdmin(admin);
                productService.save(product);
-               productService.getAllProducts().add(product);
+
               return ResponseEntity.ok("Ürün eklendi");
            }
         else {
@@ -66,7 +67,7 @@ public class ProductController {
             product1.setTitle(product.getTitle());
             product1.setDescription(product.getDescription());
             productService.save(product1);
-            productService.getAllProducts().set(id.intValue()-1,product);
+           // productService.getAllProducts().set(id.intValue()-1,product);
             return ResponseEntity.ok("Başari ile güncellendi");
         }else{
             ApiError apiError=new ApiError(404,"Paylaşım bulunamadi","/updateProduct");
@@ -103,7 +104,7 @@ public class ProductController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError hataGonder(MethodArgumentNotValidException exception){
+    public ApiError sendError(MethodArgumentNotValidException exception){
         ApiError apiError=new ApiError(400,"Hata","/api/product");
         Map<String,String> validationErross=new HashMap<>();
         for(FieldError fieldError: exception.getBindingResult().getFieldErrors()){
@@ -112,6 +113,7 @@ public class ProductController {
         }
         return  apiError;
     }
+
 
 
 }

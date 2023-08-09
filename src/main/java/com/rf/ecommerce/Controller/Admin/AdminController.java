@@ -4,7 +4,6 @@ import com.rf.ecommerce.Entity.Admin.Admin;
 import com.rf.ecommerce.Service.Admin.AdminService;
 import com.rf.ecommerce.error.ApiError;
 import jakarta.validation.Valid;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,7 +76,7 @@ public class AdminController {
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError hataGonder(MethodArgumentNotValidException exception){
+    public ApiError sendError(MethodArgumentNotValidException exception){
         ApiError apiError=new ApiError(400,"Hata","/api/admin");
         Map<String,String> validationErross=new HashMap<>();
         for(FieldError fieldError: exception.getBindingResult().getFieldErrors()){

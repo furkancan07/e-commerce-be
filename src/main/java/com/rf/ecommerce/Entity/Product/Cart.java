@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Table
 @Entity
-public class Hamper {
+public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
