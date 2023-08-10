@@ -1,5 +1,6 @@
 package com.rf.ecommerce.Controller.Product;
 
+import com.rf.ecommerce.Dto.Product.CommentDto;
 import com.rf.ecommerce.Entity.Product.Comment;
 import com.rf.ecommerce.Entity.Product.Product;
 import com.rf.ecommerce.Entity.User.User;
@@ -24,44 +25,28 @@ import java.util.Map;
 @RequestMapping("/api")
 public class CommentController {
     @Autowired
-    UserService userService;
-    @Autowired
     CommentService commentService;
-    @Autowired
-    ProductService productService;
 
     // yorum ekleme
     @PostMapping("/addComment/{email}/{productId}")
     public ResponseEntity<?> addComment(@PathVariable String email, @PathVariable Long productId, @Valid @RequestBody Comment comment){
-
-        if(userService.existsByEmail(email) && productService.existsById(productId)){
-            User user=userService.findByEmail(email);
-            Product product=productService.findById(productId);
-            comment.setUser(user);
-            comment.setProduct(product);
-            commentService.save(comment);
+    boolean addToComment= commentService.addToComment(email,productId,comment);
+        if(addToComment){
             return ResponseEntity.ok("Yorum eklendi");
         }
-
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kullanici veya paylaşım bulunamadı");
     }
 
     // bir paylaşıma ait yorumları getirme
     @GetMapping("getComments/{productId}")
-    public List<Comment> getComments(@PathVariable Long productId){
-        List<Comment> commentList=new ArrayList<>();
-        for(Comment comment: commentService.getAllComments()){
-            if(comment.getProduct().getId().equals(productId)){
-                commentList.add(comment);
-            }
-        }
-        return commentList;
+    public List<CommentDto> getComments(@PathVariable Long productId){
+        return commentService.getToComments(productId);
     }
-    // yorum silme"
+    // yorum silme
     @DeleteMapping("/deleteComment/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable Long commentId){
-        if(commentService.existById(commentId)){
-            commentService.delete(commentId);
+        boolean deleteToComment= commentService.deleteToComment(commentId);
+        if(deleteToComment){
             return ResponseEntity.ok("Yorum Silindi");
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Yorum Bulunamdı");

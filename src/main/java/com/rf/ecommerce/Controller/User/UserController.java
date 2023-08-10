@@ -1,6 +1,7 @@
 package com.rf.ecommerce.Controller.User;
 
-import com.rf.ecommerce.Dto.ChangePassword;
+import com.rf.ecommerce.Dto.User.ChangePassword;
+import com.rf.ecommerce.Dto.User.UserDto;
 import com.rf.ecommerce.Entity.User.User;
 import com.rf.ecommerce.Service.User.UserService;
 import com.rf.ecommerce.error.ApiError;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -86,6 +88,10 @@ public class UserController {
             return ResponseEntity.ok("Şifre değiştirildi");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kullanici Bulunamadi");
+    }
+    @GetMapping("/getAllUsers")
+    public List<UserDto> getUsers(){
+        return userService.getAllUser();
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

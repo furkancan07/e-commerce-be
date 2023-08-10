@@ -18,6 +18,7 @@ public class ECommerceApplication {
     }
    @Bean
     CommandLineRunner startRun(UserService userService, AdminService adminService){
+
        return  new CommandLineRunner() {
            @Override
            public void run(String... args) throws Exception {
@@ -32,8 +33,6 @@ public class ECommerceApplication {
                admin.setUsername("admin");
                admin.setPassword(adminService.passwordEncoder.encode(admin.getPassword()));
                adminService.save(admin);
-
-
            }
        };
    }

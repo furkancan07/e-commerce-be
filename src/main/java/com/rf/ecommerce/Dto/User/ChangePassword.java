@@ -1,4 +1,4 @@
-package com.rf.ecommerce.Dto;
+package com.rf.ecommerce.Dto.User;
 
 import jakarta.persistence.Column;
 
