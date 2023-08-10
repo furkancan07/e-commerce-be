@@ -149,10 +149,8 @@ Daha Bitmedi...
 ```
 | Parametre | Tip     | Açıklama                |
 | :-------- | :------- | :------------------------- |
-| `email` | `String` | **Gerekli**. API 
-anahtarınız. |
-| `productId` | `Long` | **Gerekli**. API 
-anahtarınız. |
+| `email` | `String` | **Gerekli**. API anahtarınız. |
+| `productId` | `Long` | **Gerekli**. API anahtarınız. |
 
 #### Yorum Silme
 ```http
@@ -161,8 +159,7 @@ anahtarınız. |
 ```
 | Parametre | Tip     | Açıklama                |
 | :-------- | :------- | :------------------------- |
-| `commentId` | `Long` | **Gerekli**. API 
-anahtarınız. |
+| `commentId` | `Long` | **Gerekli**. API anahtarınız. |
 
 #### Bir Ürüne Ait Yorumları Getirme
 ```http
@@ -171,8 +168,7 @@ anahtarınız. |
 ```
 | Parametre | Tip     | Açıklama                |
 | :-------- | :------- | :------------------------- |
-| `productId` | `Long` | **Gerekli**. API 
-anahtarınız. |
+| `productId` | `Long` | **Gerekli**. API anahtarınız. |
 
 
 
