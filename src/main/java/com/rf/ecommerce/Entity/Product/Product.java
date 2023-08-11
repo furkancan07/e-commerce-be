@@ -19,12 +19,14 @@ public class Product {
     private String title;
     private String description;
     @ManyToOne
-    @JoinColumn(name = "sahibi")
+    @JoinColumn(name = "store")
     private Admin admin;
     @Lob
     private String image;
+    @ManyToOne
+    private Category category;
     @NotNull
-    private String Category;
+    private String categoryName;
     @NotNull
     private int price;
 }

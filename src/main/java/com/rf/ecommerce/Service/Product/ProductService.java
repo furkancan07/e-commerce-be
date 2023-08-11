@@ -4,6 +4,7 @@ package com.rf.ecommerce.Service.Product;
 import com.rf.ecommerce.Dto.DtoConvert;
 import com.rf.ecommerce.Dto.Product.ProductDto;
 import com.rf.ecommerce.Entity.Admin.Admin;
+import com.rf.ecommerce.Entity.Product.Category;
 import com.rf.ecommerce.Entity.Product.Product;
 import com.rf.ecommerce.Repository.Product.ProductRepository;
 import com.rf.ecommerce.Service.Admin.AdminService;
@@ -21,6 +22,8 @@ public class ProductService {
     private final DtoConvert dtoConvert;
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private CategoryService categoryService;
 
 
 
@@ -46,11 +49,13 @@ public class ProductService {
         return  productRepository.findAll();
     }
     public boolean createToProduct(String username,Product product){
-        if(!adminService.existsByUsername(username)){
+        if(!adminService.existsByUsername(username) || !categoryService.existsByName(product.getCategoryName())){
             return false;
         }
         Admin admin=adminService.findByUsername(username);
         product.setAdmin(admin);
+        Category category=categoryService.findByName(product.getCategoryName());
+        product.setCategory(category);
         save(product);
         return true;
     }
@@ -83,7 +88,7 @@ public class ProductService {
     public List<ProductDto> getToCategoryProducts(String category){
         List<Product> productList=new ArrayList<>();
         for(Product product : getAllProducts()){
-            if(product.getCategory().equals(category)){
+            if(product.getCategory().getName().equals(category)){
                 productList.add(product);
             }
         }

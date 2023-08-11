@@ -33,7 +33,7 @@ public class ProductController {
         if(createToProduct){
               return ResponseEntity.ok("Ürün eklendi");
            }
-              return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kullanici bulunanadi");
+              return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kategori bulunanadi");
 
     }
     // ürün silme

@@ -1,8 +1,10 @@
 package com.rf.ecommerce;
 
 import com.rf.ecommerce.Entity.Admin.Admin;
+import com.rf.ecommerce.Entity.Product.Category;
 import com.rf.ecommerce.Entity.User.User;
 import com.rf.ecommerce.Service.Admin.AdminService;
+import com.rf.ecommerce.Service.Product.CategoryService;
 import com.rf.ecommerce.Service.User.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +19,7 @@ public class ECommerceApplication {
         SpringApplication.run(ECommerceApplication.class, args);
     }
    @Bean
-    CommandLineRunner startRun(UserService userService, AdminService adminService){
+    CommandLineRunner startRun(UserService userService, AdminService adminService, CategoryService categoryService){
 
        return  new CommandLineRunner() {
            @Override
@@ -33,6 +35,9 @@ public class ECommerceApplication {
                admin.setUsername("admin");
                admin.setPassword(adminService.passwordEncoder.encode(admin.getPassword()));
                adminService.save(admin);
+               Category category=new Category();
+               category.setName("Teknoloji");
+               categoryService.save(category);
            }
        };
    }
