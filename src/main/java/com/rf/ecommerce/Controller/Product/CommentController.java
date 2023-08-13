@@ -32,11 +32,7 @@ public class CommentController {
     // yorum ekleme
     @PostMapping("/addComment/{email}/{productId}")
     public ResponseEntity<?> addComment(@PathVariable String email, @PathVariable Long productId, @Valid @RequestBody Comment comment){
-    boolean addToComment= commentService.addToComment(email,productId,comment);
-        if(addToComment){
-            return ResponseEntity.ok("Yorum eklendi");
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kullanici veya paylaşım bulunamadı");
+        return commentService.addToComment(email,productId,comment);
     }
 
     // bir paylaşıma ait yorumları getirme
@@ -47,12 +43,7 @@ public class CommentController {
     // yorum silme
     @DeleteMapping("/deleteComment/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable Long commentId){
-        boolean deleteToComment= commentService.deleteToComment(commentId);
-        if(deleteToComment){
-            return ResponseEntity.ok("Yorum Silindi");
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Yorum Bulunamdı");
-        }
+        return commentService.deleteToComment(commentId);
     }
 
 

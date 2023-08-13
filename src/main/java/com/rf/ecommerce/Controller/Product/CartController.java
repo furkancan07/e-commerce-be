@@ -27,24 +27,15 @@ public class CartController {
     @PostMapping("/addCart/{email}/{productId}")
     @CrossOrigin
     public ResponseEntity<?> addCart(@PathVariable String email,@PathVariable Long productId){
-        boolean addToCart= cartService.addToCart(email,productId);
-        if(addToCart){
-           return  ResponseEntity.ok("Ürün Sepete Eklendi");
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kullanici veya Paylaşım bulunamadı");
+        return cartService.addToCart(email,productId);
     }
 
     // sepetten kaldirma
     @DeleteMapping("/deleteCart/{cartId}")
     @CrossOrigin
     public ResponseEntity<?> deleteHamper(@PathVariable Long cartId){
-        boolean deleteToCart= cartService.deleteToCart(cartId);
-        if(deleteToCart){
-            return ResponseEntity.ok("Sepetten ürün kaldırıldı");
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ürün bulunamadı");
+        return cartService.deleteToCart(cartId);
     }
-
 
     //sepettekilerin listesini getirme
     @GetMapping("/getCarts/{email}")

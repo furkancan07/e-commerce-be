@@ -4,7 +4,6 @@ import com.rf.ecommerce.Dto.Product.ProductDto;
 import com.rf.ecommerce.Dto.User.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 @Data
 @AllArgsConstructor
 public class OrderDto {

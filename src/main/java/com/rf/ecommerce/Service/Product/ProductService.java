@@ -10,8 +10,11 @@ import com.rf.ecommerce.Entity.Product.Product;
 import com.rf.ecommerce.Repository.Product.ProductRepository;
 import com.rf.ecommerce.Service.Admin.AdminService;
 import com.rf.ecommerce.Service.Order.OrderService;
+import com.rf.ecommerce.error.ApiError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -54,20 +57,20 @@ public class ProductService {
     public List<Product> getAllProducts(){
         return  productRepository.findAll();
     }
-    public boolean createToProduct(String username,Product product){
+    public ResponseEntity<?> createToProduct(String username, Product product){
         if(!adminService.existsByUsername(username) || !categoryService.existsByName(product.getCategoryName())){
-            return false;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(sendError());
         }
         Admin admin=adminService.findByUsername(username);
         product.setAdmin(admin);
         Category category=categoryService.findByName(product.getCategoryName());
         product.setCategory(category);
         save(product);
-        return true;
+        return ResponseEntity.ok().body("Ürün Eklendi");
     }
-    public boolean deleteToProduct(Long id){
+    public ResponseEntity<?> deleteToProduct(Long id){
         if(!existsById(id)){
-            return false;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(sendError());
         }
         for (Order order : orderService.getAllOrders()){
             if(order.getProduct().getId().equals(id)){
@@ -76,17 +79,17 @@ public class ProductService {
         }
         delete(id);
 
-        return true;
+        return ResponseEntity.ok().body("Ürün Silindi");
     }
-    public boolean updateToProduct(Long id,Product product){
+    public ResponseEntity<?> updateToProduct(Long id,Product product){
         if(!existsById(id)){
-            return false;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(sendError());
         }
         Product product1=findById(id);
         product1.setTitle(product.getTitle());
         product1.setDescription(product.getDescription());
         save(product1);
-        return  true;
+        return  ResponseEntity.ok().body("Ürün güncellendi");
     }
     public List<ProductDto> getToProducts(String username){
         List<Product> productList=new ArrayList<>();
@@ -105,6 +108,9 @@ public class ProductService {
             }
         }
         return productList.stream().map(x->dtoConvert.productConvert(x)).collect(Collectors.toList());
+    }
+    private ApiError sendError(){
+        return new ApiError(404,"Bulunamadi","api/product");
     }
 
 }

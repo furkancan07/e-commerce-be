@@ -5,8 +5,12 @@ import com.rf.ecommerce.Dto.Product.CategoryDto;
 import com.rf.ecommerce.Entity.Product.Category;
 import com.rf.ecommerce.Entity.Product.Product;
 import com.rf.ecommerce.Repository.Product.CategoryRepository;
+import com.rf.ecommerce.error.ApiError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -35,16 +39,19 @@ public class CategoryService {
     public Category findByName(String name){
         return categoryRepository.findByName(name);
     }
-    public boolean createAtCategory(Category category){
+    public ResponseEntity<?> createAtCategory(Category category){
         if(existsByName(category.getName())){
-            return false;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(sendError());
         }
         categoryRepository.save(category);
-        return true;
+        return ResponseEntity.ok().body("Kategori eklendi");
     }
-    public boolean deleteToCategory(Long categoryId){
+
+
+
+    public ResponseEntity<?> deleteToCategory(Long categoryId){
         if(!categoryRepository.existsById(categoryId)){
-            return false;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(sendError());
         }
 
         for (Product product : productService.getAllProducts() ){
@@ -53,10 +60,13 @@ public class CategoryService {
             }
         }
         delete(categoryId);
-        return true;
+        return ResponseEntity.ok().body("Kategori silindi");
     }
     public List<CategoryDto> getCategories(){
         return categoryRepository.findAll().stream().map(x->dtoConvert.categoryConvert(x)).collect(Collectors.toList());
+    }
+    private ApiError sendError() {
+        return new ApiError(404,"Kategori Bulunamdi","api/category");
     }
 
 }

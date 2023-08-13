@@ -31,32 +31,17 @@ public class ProductController {
     @PostMapping("/createProduct/{username}")
     @CrossOrigin
     public ResponseEntity<?> createProduct(@PathVariable String username , @Valid @RequestBody Product product){
-        boolean createToProduct=productService.createToProduct(username,product);
-        if(createToProduct){
-              return ResponseEntity.ok("Ürün eklendi");
-           }
-              return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kategori bulunanadi");
-
+              return productService.createToProduct(username,product);
     }
     // ürün silme
     @DeleteMapping("/deleteProduct/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id){
-        boolean deleteToProduct= productService.deleteToProduct(id);
-       if(deleteToProduct){
-           return ResponseEntity.ok("Başarı ile silindi");
-       }
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Paylaşım bulunamadi");
-
+           return productService.deleteToProduct(id);
     }
     // ürün güncelleme
     @PutMapping("/updateProduct/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable Long id,@Valid @RequestBody Product product){
-        boolean updateToProduct= productService.updateToProduct(id,product);
-        if(updateToProduct){
-            return ResponseEntity.ok("Başari ile güncellendi");
-        }
-            ApiError apiError=new ApiError(404,"Paylaşım bulunamadi","/updateProduct");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+            return productService.updateToProduct(id,product);
     }
 
     // bir admine ait tüm ürünleri getirme
