@@ -9,6 +9,7 @@ import com.rf.ecommerce.Service.Product.ProductService;
 import com.rf.ecommerce.Service.User.UserService;
 import com.rf.ecommerce.error.ApiError;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class CommentController {
-    @Autowired
-    CommentService commentService;
+
+    private final CommentService commentService;
 
     // yorum ekleme
     @PostMapping("/addComment/{email}/{productId}")
@@ -53,15 +55,5 @@ public class CommentController {
         }
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError sendError(MethodArgumentNotValidException exception){
-        ApiError apiError=new ApiError(400,"Hata","/api/product");
-        Map<String,String> validationErross=new HashMap<>();
-        for(FieldError fieldError: exception.getBindingResult().getFieldErrors()){
-            validationErross.put(fieldError.getField(),fieldError.getDefaultMessage());
-            apiError.setValidationErrors(validationErross);
-        }
-        return  apiError;
-    }
+
 }

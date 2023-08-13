@@ -74,15 +74,5 @@ public class AdminController {
     }
 
     }
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError sendError(MethodArgumentNotValidException exception){
-        ApiError apiError=new ApiError(400,"Hata","/api/admin");
-        Map<String,String> validationErross=new HashMap<>();
-        for(FieldError fieldError: exception.getBindingResult().getFieldErrors()){
-            validationErross.put(fieldError.getField(),fieldError.getDefaultMessage());
-            apiError.setValidationErrors(validationErross);
-        }
-        return  apiError;
-    }
+
 }
