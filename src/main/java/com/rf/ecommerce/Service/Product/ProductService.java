@@ -4,11 +4,14 @@ package com.rf.ecommerce.Service.Product;
 import com.rf.ecommerce.Dto.DtoConvert;
 import com.rf.ecommerce.Dto.Product.ProductDto;
 import com.rf.ecommerce.Entity.Admin.Admin;
+import com.rf.ecommerce.Entity.Order.Order;
 import com.rf.ecommerce.Entity.Product.Category;
 import com.rf.ecommerce.Entity.Product.Product;
 import com.rf.ecommerce.Repository.Product.ProductRepository;
 import com.rf.ecommerce.Service.Admin.AdminService;
+import com.rf.ecommerce.Service.Order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,6 +27,9 @@ public class ProductService {
     private AdminService adminService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    @Lazy
+    private OrderService orderService;
 
 
 
@@ -63,7 +69,13 @@ public class ProductService {
         if(!existsById(id)){
             return false;
         }
+        for (Order order : orderService.getAllOrders()){
+            if(order.getProduct().getId().equals(id)){
+                orderService.delete(order.getId());
+            }
+        }
         delete(id);
+
         return true;
     }
     public boolean updateToProduct(Long id,Product product){
