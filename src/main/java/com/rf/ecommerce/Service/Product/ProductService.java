@@ -6,6 +6,7 @@ import com.rf.ecommerce.Dto.Product.ProductDto;
 import com.rf.ecommerce.Entity.Admin.Admin;
 import com.rf.ecommerce.Entity.Order.Order;
 import com.rf.ecommerce.Entity.Product.Category;
+import com.rf.ecommerce.Entity.Product.Like;
 import com.rf.ecommerce.Entity.Product.Product;
 import com.rf.ecommerce.Repository.Product.ProductRepository;
 import com.rf.ecommerce.Service.Admin.AdminService;
@@ -33,6 +34,9 @@ public class ProductService {
     @Autowired
     @Lazy
     private OrderService orderService;
+    @Autowired
+    @Lazy
+    private LikeService likeService;
 
 
 
@@ -61,11 +65,15 @@ public class ProductService {
         if(!adminService.existsByUsername(username) || !categoryService.existsByName(product.getCategoryName())){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(sendError());
         }
+
         Admin admin=adminService.findByUsername(username);
         product.setAdmin(admin);
         Category category=categoryService.findByName(product.getCategoryName());
         product.setCategory(category);
         save(product);
+        Like like=new Like();
+        like.setProduct(product);
+        likeService.save(like);
         return ResponseEntity.ok().body("Ürün Eklendi");
     }
     public ResponseEntity<?> deleteToProduct(Long id){

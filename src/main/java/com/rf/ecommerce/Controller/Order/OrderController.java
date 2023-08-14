@@ -1,6 +1,7 @@
 package com.rf.ecommerce.Controller.Order;
 
 import com.rf.ecommerce.Dto.Order.OrderDto;
+import com.rf.ecommerce.Dto.Order.RequestOrderDto;
 import com.rf.ecommerce.Dto.Order.UpdateStatusDto;
 import com.rf.ecommerce.Entity.Order.Order;
 import com.rf.ecommerce.Service.Order.OrderService;
@@ -20,11 +21,11 @@ public class OrderController {
     private final OrderService orderService;
     // sipariş al
     @PostMapping("/createOrder/{productId}/{email}")
-    public ResponseEntity<?> createOrder(Order order,@PathVariable Long productId,@PathVariable String email){
+    public ResponseEntity<?> createOrder(@Valid @RequestBody RequestOrderDto order, @PathVariable Long productId, @PathVariable String email){
         return orderService.createAtOrder(order,productId,email);
     }
 
-    // sipariş iptal et
+    // siparişi iptal et
     @DeleteMapping("/deleteOrder/{orderId}")
     public ResponseEntity<?> deleteOrder(@PathVariable Long orderId){
        return orderService.deleteAtOrder(orderId);

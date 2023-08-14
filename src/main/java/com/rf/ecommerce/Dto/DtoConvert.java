@@ -2,17 +2,11 @@ package com.rf.ecommerce.Dto;
 
 import com.rf.ecommerce.Dto.Admin.AdminDto;
 import com.rf.ecommerce.Dto.Order.OrderDto;
-import com.rf.ecommerce.Dto.Product.CartDto;
-import com.rf.ecommerce.Dto.Product.CategoryDto;
-import com.rf.ecommerce.Dto.Product.CommentDto;
-import com.rf.ecommerce.Dto.Product.ProductDto;
+import com.rf.ecommerce.Dto.Product.*;
 import com.rf.ecommerce.Dto.User.UserDto;
 import com.rf.ecommerce.Entity.Admin.Admin;
 import com.rf.ecommerce.Entity.Order.Order;
-import com.rf.ecommerce.Entity.Product.Cart;
-import com.rf.ecommerce.Entity.Product.Category;
-import com.rf.ecommerce.Entity.Product.Comment;
-import com.rf.ecommerce.Entity.Product.Product;
+import com.rf.ecommerce.Entity.Product.*;
 import com.rf.ecommerce.Entity.User.User;
 import org.springframework.context.annotation.Configuration;
 
@@ -40,6 +34,10 @@ public class DtoConvert {
         return new CartDto(from.getId(), userConvert(from.getUser()),productConvert(from.getProduct()));
     }
     public OrderDto orderConvert(Order from){
-        return new OrderDto(from.getId(),productConvert(from.getProduct()),userConvert(from.getUser()), from.getTimestap(), from.getOrderStatus());
+        return new OrderDto(from.getId(),productConvert(from.getProduct()),userConvert(from.getUser()), from.getTimestap(), from.getOrderStatus(), from.getAddress()
+        ,from.getCity(),from.getDistrict(),from.getPostCode());
+    }
+    public LikeDto likeConvert(Like from){
+        return new LikeDto(from.getId(), from.getCount(), productConvert(from.getProduct()),userConvert(from.getUser()));
     }
 }

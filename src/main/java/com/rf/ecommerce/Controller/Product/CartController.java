@@ -37,7 +37,7 @@ public class CartController {
         return cartService.deleteToCart(cartId);
     }
 
-    //sepettekilerin listesini getirme
+    // sepettekilerin listesini getirme
     @GetMapping("/getCarts/{email}")
     @CrossOrigin
     public List<CartDto> getCarts(@PathVariable String email){

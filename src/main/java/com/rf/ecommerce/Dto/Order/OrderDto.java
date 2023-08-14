@@ -12,4 +12,8 @@ public class OrderDto {
     private UserDto user;
     private long timestap;
     private String orderStatus;
+    private String address;
+    private String city;
+    private String district;
+    private int postCode;
 }
