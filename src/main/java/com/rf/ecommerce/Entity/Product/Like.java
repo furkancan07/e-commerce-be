@@ -2,6 +2,7 @@ package com.rf.ecommerce.Entity.Product;
 
 import com.rf.ecommerce.Entity.User.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data

@@ -4,7 +4,6 @@ import com.rf.ecommerce.Dto.Product.LikeDto;
 import com.rf.ecommerce.Service.Product.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,8 +31,5 @@ public class LikeController {
     public List<LikeDto> getLikeList(@PathVariable String email){
         return likeService.getLikeList(email);
     }
-
-
-
 
 }

@@ -8,6 +8,8 @@ import com.rf.ecommerce.Service.Order.OrderService;
 import com.rf.ecommerce.error.ApiError;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class OrderController {
+
     private final OrderService orderService;
     // sipariş al
     @PostMapping("/createOrder/{productId}/{email}")
@@ -36,6 +39,10 @@ public class OrderController {
     public List<OrderDto> getList(@PathVariable String username){
         return orderService.getList(username);
     }
+
+    // bir kullanıcının yaptığı sipraişleri getirme
+    @GetMapping("/getMyOrderList/{email}")
+    public List<OrderDto> getMyOrderLİst(@PathVariable String email){return orderService.getMyOrderList(email);}
 
     // sipariş durum güncelleme
     @PutMapping("/updateOrderStatus/{orderId}")

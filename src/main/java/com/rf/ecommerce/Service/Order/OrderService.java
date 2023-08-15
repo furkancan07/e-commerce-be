@@ -9,10 +9,12 @@ import com.rf.ecommerce.Entity.Product.Product;
 import com.rf.ecommerce.Entity.User.User;
 import com.rf.ecommerce.Repository.Order.OrderRepository;
 import com.rf.ecommerce.Repository.Product.ProductRepository;
+import com.rf.ecommerce.Service.Mail.EmailService;
 import com.rf.ecommerce.Service.Product.ProductService;
 import com.rf.ecommerce.Service.User.UserService;
 import com.rf.ecommerce.error.ApiError;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
+    @Autowired
+    private  EmailService emailService;
     @Lazy
     private final ProductService productService;
     private final UserService userService;
@@ -49,6 +53,7 @@ public class OrderService {
         order1.setDistrict(order.getDistrict());
         order1.setPostCode(order.getPostCode());
         save(order1);
+        statusChangeMail(email,order1);
         return ResponseEntity.ok().body("Sipariş oluşturuldu");
     }
     public ResponseEntity<?> deleteAtOrder(Long id){
@@ -65,6 +70,7 @@ public class OrderService {
         Order updateOrder=orderRepository.findById(orderId).orElseThrow();
         updateOrder.setOrderStatus(order.getOrderStatus());
         save(updateOrder);
+        statusChangeMail(updateOrder.getUser().getEmail(),updateOrder);
         return ResponseEntity.ok().body("Status Güncellendi");
     }
     public List<OrderDto> getList(String username){
@@ -76,10 +82,21 @@ public class OrderService {
         }
         return newList.stream().map(x->dtoConvert.orderConvert(x)).collect(Collectors.toList());
     }
+    public void statusChangeMail(String email,Order order){
+        emailService.sendMail(email,"Sipariş durum güncellemesi", order.getOrderStatus());
+    }
+
+    public List<OrderDto> getMyOrderList(String email) {
+        List<Order> newList=new ArrayList<>();
+        for(Order order : getAllOrders() ){
+            if(order.getUser().getEmail().equals(email)){
+                newList.add(order);
+            }
+        }
+        return newList.stream().map(x->dtoConvert.orderConvert(x)).collect(Collectors.toList());
+    }
+
     private ApiError sendApiError(){
         return new ApiError(404,"Sipariş bulunamadi","api/order");
     }
-
-
-
 }
