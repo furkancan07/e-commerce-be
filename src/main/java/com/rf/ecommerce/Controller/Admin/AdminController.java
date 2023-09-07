@@ -56,7 +56,7 @@ public class AdminController {
     if(adminService.existsByUsername(username)){
      admin=adminService.findByUsername(username);
      if(adminService.passwordEncoder.matches(sifre,admin.getPassword())){
-         return  ResponseEntity.ok("Giriş Yapıldı");
+         return  ResponseEntity.ok(200);
      }else{
          ApiError apiError=new ApiError(401,"Yanliş Şifre","/api/auth");
          Map<String,String > validationErrors=new HashMap<>();

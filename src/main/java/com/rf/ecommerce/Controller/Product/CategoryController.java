@@ -18,7 +18,6 @@ import java.util.List;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class CategoryController {
-
    private final CategoryService categoryService;
     // kategori oluşturma
     @PostMapping("/createCategory")

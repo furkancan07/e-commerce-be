@@ -37,11 +37,12 @@ public class UserController {
         else {
             user.setPassword(userService.passwordEncoder.encode(user.getPassword()));
             userService.save(user);
-            return ResponseEntity.ok("Kullanici başari ile kayıt oldu");
+            return ResponseEntity.ok(200);
         }
     }
     // giriş
     @PostMapping("/userLogin")
+    @CrossOrigin
     public ResponseEntity<?> userLogin(@RequestHeader(name = "Authorization",required = false)String authorization){
         User user=null;
         if(authorization==null){
@@ -58,7 +59,7 @@ public class UserController {
         if(userService.existsByEmail(email)){
             user=userService.findByEmail(email);
             if(userService.passwordEncoder.matches(sifre,user.getPassword())){
-                return  ResponseEntity.ok("Giriş Yapıldı");
+                return  ResponseEntity.ok(new ApiError(200,"Giris Yapildi",""));
             }else{
                 ApiError apiError=new ApiError(401,"Yanliş Şifre","/api/user/auth");
                 Map<String,String > validationErrors=new HashMap<>();
@@ -78,6 +79,7 @@ public class UserController {
 
     // şifremi unuttum
     @PostMapping("/forgot")
+    @CrossOrigin
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ChangePassword user){
         User updateUser;
         if(userService.existsByEmail(user.getEmail())){
@@ -85,13 +87,20 @@ public class UserController {
             updateUser.setPassword(user.getPassword());
             updateUser.setPassword(userService.passwordEncoder.encode(updateUser.getPassword()));
             userService.save(updateUser);
-            return ResponseEntity.ok("Şifre değiştirildi");
+            return ResponseEntity.ok(new ApiError(200,"Şifre değiştirildi",""));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kullanici Bulunamadi");
     }
     @GetMapping("/getAllUsers")
+    @CrossOrigin
     public List<UserDto> getUsers(){
         return userService.getAllUser();
     }
+    @GetMapping("/getUser/{email}")
+    @CrossOrigin
+    public ResponseEntity<?> getUser(@PathVariable String email){
+        return userService.getUser(email);
+    }
 
+//
 }

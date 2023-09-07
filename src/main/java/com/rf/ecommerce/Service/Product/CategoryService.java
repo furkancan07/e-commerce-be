@@ -46,9 +46,7 @@ public class CategoryService {
         categoryRepository.save(category);
         return ResponseEntity.ok().body("Kategori eklendi");
     }
-
-
-
+    
     public ResponseEntity<?> deleteToCategory(Long categoryId){
         if(!categoryRepository.existsById(categoryId)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(sendError());

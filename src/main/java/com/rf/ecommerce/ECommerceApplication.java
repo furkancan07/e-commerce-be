@@ -18,7 +18,7 @@ public class ECommerceApplication {
     public static void main(String[] args) {
         SpringApplication.run(ECommerceApplication.class, args);
     }
-   @Bean
+ /*  @Bean
     CommandLineRunner startRun(UserService userService, AdminService adminService, CategoryService categoryService){
 
        return  new CommandLineRunner() {
@@ -39,6 +39,6 @@ public class ECommerceApplication {
                category.setName("Teknoloji");
                categoryService.save(category);
            }
-       };
-   }
+       };}*/
+
 }

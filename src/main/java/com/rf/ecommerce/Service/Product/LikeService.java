@@ -44,31 +44,33 @@ public class LikeService {
         save(like);
         return ResponseEntity.ok().body(product.getId()+"idli ürünün like sayısı: "+ like.getCount());
     }
-    public ResponseEntity<?> minusLike(Long productId,String email) {
+    public ResponseEntity<?> minusLike(Long productId) {
         if(!productService.existsById(productId)){
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(sendError("Ürün Bulunamadı"));
         }
         Product product=productService.findById(productId);
         Like like= findByProduct(product);
-        User user=userService.findByEmail(email);
-        like.setUser(user);
         like.setCount(like.getCount()-1);
+        like.setUser(null);
         save(like);
         return ResponseEntity.ok().body(product.getId()+"idli ürünün like sayısı: "+ like.getCount());
     }
 
-    public List<LikeDto> getAllLikes(){
-        return likeRepository.findAll().stream().map(x->dtoConvert.likeConvert(x)).collect(Collectors.toList());
+    public List<Like> getAllLikes(){
+        return likeRepository.findAll();
     }
 
     public List<LikeDto> getLikeList(String email) {
-        List<LikeDto >likeList=new ArrayList<>();
-        for(LikeDto likeDto : getAllLikes()){
-          if(likeDto.getUser().getEmail().equals(email)){
-              likeList.add(likeDto);
-          }
+        List<Like >likeList=new ArrayList<>();
+        for(Like likeDto : getAllLikes()){
+            if(likeDto.getUser()!=null){
+                if(likeDto.getUser().getEmail().equals(email)){
+                    likeList.add(likeDto);
+                }
+            }
+
         }
-        return likeList;
+        return likeList.stream().map(x->dtoConvert.likeConvert(x)).collect(Collectors.toList());
     }
     private ApiError sendError(String message){
         return new ApiError(404,message,"api/like");

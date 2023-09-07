@@ -22,7 +22,6 @@ public class EmailService {
         message.setSubject(subject);
         message.setText(content);
         javaMailSender.send(message);
-        System.out.println("Mail gönderidli");
+        System.out.println("Mail gönderildi");
     }
-
 }

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+
 @Data
 @Table
 @Entity
@@ -22,7 +23,7 @@ public class Product {
     @JoinColumn(name = "store")
     private Admin admin;
     @Lob
-    private String image;
+    private String  image;
     @ManyToOne
     private Category category;
     @NotNull

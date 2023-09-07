@@ -31,17 +31,20 @@ public class CommentController {
 
     // yorum ekleme
     @PostMapping("/addComment/{email}/{productId}")
+    @CrossOrigin
     public ResponseEntity<?> addComment(@PathVariable String email, @PathVariable Long productId, @Valid @RequestBody Comment comment){
         return commentService.addToComment(email,productId,comment);
     }
 
     // bir paylaşıma ait yorumları getirme
     @GetMapping("getComments/{productId}")
+    @CrossOrigin
     public List<CommentDto> getComments(@PathVariable Long productId){
         return commentService.getToComments(productId);
     }
     // yorum silme
     @DeleteMapping("/deleteComment/{commentId}")
+    @CrossOrigin
     public ResponseEntity<?> deleteComment(@PathVariable Long commentId){
         return commentService.deleteToComment(commentId);
     }

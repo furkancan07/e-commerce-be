@@ -1,6 +1,6 @@
 package com.rf.ecommerce.Dto.Product;
-
 import com.rf.ecommerce.Dto.User.UserDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

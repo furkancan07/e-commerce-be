@@ -58,9 +58,12 @@ public class CartService {
     public List<CartDto> getCarts(String email){
         List<Cart> carts =new ArrayList<>();
         for(Cart cart : getAllCarts()){
-            if(cart.getUser().getEmail().equals(email)){
-                carts.add(cart);
+            if(cart.getUser()!=null){
+                if(cart.getUser().getEmail().equals(email)){
+                    carts.add(cart);
+                }
             }
+
         }
         return carts.stream().map(x->dtoConvert.cartConvert(x)).collect(Collectors.toList());
     }

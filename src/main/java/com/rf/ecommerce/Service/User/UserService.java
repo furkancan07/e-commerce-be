@@ -4,7 +4,10 @@ import com.rf.ecommerce.Dto.DtoConvert;
 import com.rf.ecommerce.Dto.User.UserDto;
 import com.rf.ecommerce.Entity.User.User;
 import com.rf.ecommerce.Repository.User.UserRepository;
+import com.rf.ecommerce.error.ApiError;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,13 @@ public class UserService {
     }
     public List<UserDto> getAllUser(){
         return userRepository.findAll().stream().map(x->DtoConvert.userConvert(x)).collect(Collectors.toList());
+    }
+    public ResponseEntity<?> getUser(String email){
+        if(!existsByEmail(email)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(404,"Kullanici Bulunamadi","api/user"));
+        }
+        User user=findByEmail(email);
+        return ResponseEntity.ok(dtoConvert.userConvert(user));
     }
 
 
