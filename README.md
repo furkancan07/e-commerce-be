@@ -1,7 +1,7 @@
 
 # E ticaret Sitesi
 
-Daha Bitmedi...
+Backend tarafında spring boot frontend tarafında react kullanılarak yapılmış basit bir e ticaret uygulaması
 
 
 
@@ -9,14 +9,15 @@ Daha Bitmedi...
 
 - Yapıldı: Admin için kayıt olma,giriş işlemleri
 - Yapıldı: Admin için ürün ekleme ve ürün özelliklerini  girme
-- Yapıldı : User için giriş,kayı,şifremi unuttum kısmı
+- Yapıldı : User için giriş,kayıt,şifremi unuttum kısmı
 - Yapıldı : Ürüne yorum ekleme,değerlendirme
 - Yapıldı : Ürünü sepete ekleme,kaldırma işlemleri
 - Yapıldı : Ürünler kategorilere göre listelendi
 - Yapıldı : Mağaza görüntüleme ve mağazanın başka ürünlerinin listesi oluşturuldu
-- Planlanan: Ödeme işlemleri
-- Planlanan: Geçmiş Siparişleri görüntüleme
-- Planlanan: Mağaza sahibi ile mesajlaşma
+- Yapıldı: Ödeme işlemleri
+
+
+
 
   
 ## API Kullanımı
@@ -48,6 +49,7 @@ Daha Bitmedi...
 | Parametre | Tip     | Açıklama                |
 | :-------- | :------- | :------------------------- |
 | `username` | `String` | **Gerekli**. API anahtarınız. |
+| `body` | `Map` | **Gerekli**. API anahtarınız. |
 
 #### Ürün Silme
 ```http
@@ -66,6 +68,7 @@ Daha Bitmedi...
 | Parametre | Tip     | Açıklama                |
 | :-------- | :------- | :------------------------- |
 | `id` | `Long` | **Gerekli**. API anahtarınız. |
+| `body` | `Map` | **Gerekli**. API anahtarınız. |
 
 
 #### Bir Mağazaya Ait Tüm Ürünleri Getirme
@@ -85,6 +88,59 @@ Daha Bitmedi...
 | Parametre | Tip     | Açıklama                |
 | :-------- | :------- | :------------------------- |
 | `category` | `String` | **Gerekli**. API anahtarınız. |
+
+#### Aranan Ürünü Getirme
+```http
+  Get /api/getSearchProducts/{$value}
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `value` | `String` | **Gerekli**. API anahtarınız. |
+
+#### idye göre ürün getimre
+```http
+  Get /api/getProduct/{$id}
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `id` | `Long` | **Gerekli**. API anahtarınız. |
+
+
+#### Like atma
+```http
+  Get /api/plusLike/{$id}/{$email}
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `id` | `Long` | **Gerekli**. API anahtarınız. |
+| `email` | `String` | **Gerekli**. API anahtarınız. |
+
+#### Like Geri Alma
+```http
+  Get /api/minusLike/{$id}
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `id` | `Long` | **Gerekli**. API anahtarınız. |
+
+
+
+#### Kullanıcınının Beğemdiği ürünleri Listeleme
+```http
+  Get /api/getLikeList/{$email}
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `email` | `String` | **Gerekli**. API anahtarınız. |
+
+
+
+
 
 #### User kayıt olma
 
@@ -113,6 +169,15 @@ Daha Bitmedi...
 | Parametre | Tip     | Açıklama                |
 | :-------- | :------- | :------------------------- |
 | `Body` | `Map` | **Gerekli**. API anahtarınız. |
+
+#### User Bilgilerini Getirme
+```http
+  Post /api/getUser/{$id]
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `id` | `Long` | **Gerekli**. API anahtarınız. |
 
 #### Sepete Ekleme
 ```http
@@ -151,6 +216,7 @@ Daha Bitmedi...
 | :-------- | :------- | :------------------------- |
 | `email` | `String` | **Gerekli**. API anahtarınız. |
 | `productId` | `Long` | **Gerekli**. API anahtarınız. |
+| `body` | `Map` | **Gerekli**. API anahtarınız. |
 
 #### Yorum Silme
 ```http
@@ -169,6 +235,104 @@ Daha Bitmedi...
 | Parametre | Tip     | Açıklama                |
 | :-------- | :------- | :------------------------- |
 | `productId` | `Long` | **Gerekli**. API anahtarınız. |
+
+#### Kategori oluşturma
+```http
+  Get /api/createCategory/
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `body` | `Map` | **Gerekli**. API anahtarınız. |
+
+#### Kategori Silme
+```http
+  Get /api/deleteCategory/{$id}
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `id` | `Long` | **Gerekli**. API anahtarınız. |
+
+#### Kategorileri Getirme
+```http
+  Get /api/getCategories
+  
+```
+
+#### Sipariş Alma
+```http
+  Get /api/createOrder/{$id}/{$email}
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `id` | `Long` | **Gerekli**. API anahtarınız. |
+| `email` | `String` | **Gerekli**. API anahtarınız. |
+| `body` | `Map` | **Gerekli**. API anahtarınız. |
+
+#### Sipariş İptal Etme
+```http
+  Get /api/deleteOrder/{$id}
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `id` | `Long` | **Gerekli**. API anahtarınız. |
+
+#### Bir mağazaya ait sipariş listesini getirme
+```http
+  Get /api/getOrderList/{$username}
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `username` | `String` | **Gerekli**. API anahtarınız. |
+
+
+#### Bir Kullanıcının Yaptığı Siparişleri getirme
+```http
+  Get /api/getMyOrderList/{$id}
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `email` | `String` | **Gerekli**. API anahtarınız. |
+
+
+#### Sipariş durumunu güncelleme
+```http
+  Get /api/updateOrderStatus/{$id}
+  
+```
+| Parametre | Tip     | Açıklama                |
+| :-------- | :------- | :------------------------- |
+| `id` | `Long` | **Gerekli**. API anahtarınız. |
+| `body` | `Map` | **Gerekli**. API anahtarınız. |
+
+
+## Sitenin Linki
+[Siteyi](https://rf-ecommerce.vercel.app) canlı görmek için tıkla.
+
+## Video
+[Video](https://www.youtube.com/watch?v=Oip3QkVyclE&list=PLoFXp7qbir3fKTMj84uEk7S9nk1A3g6NK)
+
+  
+## İletişim
+
+İletişim için canfurkan903@gmail.com adresine e-posta gönderin 
+
+  
+## Kullanılan Teknolojiler
+
+**Frontend:** React, Redux, Vite, MaterialUI,Axios,Router
+
+**Backend:** Spring Boot
+
+**DataBase** MySql
+
+**Yayınlama** Vercel,Railway
+
 
 
 
